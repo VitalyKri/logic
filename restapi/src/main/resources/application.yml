@@ -1,0 +1,12 @@
+com:
+  selfaccounting:
+    endpoint:
+      base-uri: '127.0.0.1:8080'
+      operation-url: 'http://${com.selfaccounting.endpoint.base-uri}/api/v1/operation'
+      portfolio-url: 'http://${com.selfaccounting.endpoint.base-uri}/api/v1/portfolio'
+    connection:
+      connectTimeout: 60 # Seconds
+      readTimeout: 10 # Seconds
+      period: 3000 # Millis
+      maxPeriod: 5000 # Millis
+      maxAttempts: 3
