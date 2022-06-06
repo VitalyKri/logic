@@ -26,30 +26,31 @@ import java.util.concurrent.TimeUnit;
 public class LoggingFeignClientFactory implements FeingClient {
 
 
-        private final ApiProperties gbApiProperties;
-        private final ObjectFactory<HttpMessageConverters> messageConverters;
-        private static final Logger logger = LogManager.getLogger(LoggingFeignClientFactory.class);
-        @Override
-        public <T> T newFeignClient(Class<T> requiredType, String url) {
-            logger.info("The main() method is called");
-            return Feign.builder()
-                    .encoder(new SpringEncoder(this.messageConverters))
-                    .decoder(new OptionalDecoder(new ResponseEntityDecoder(new SpringDecoder(this.messageConverters))))
-                    .options(new Request.Options(
-                            gbApiProperties.getConnection().getConnectTimeout(),
-                            TimeUnit.SECONDS,
-                            gbApiProperties.getConnection().getReadTimeout(),
-                            TimeUnit.SECONDS,
-                            true
-                    ))
-                    .logger(new Slf4jLogger(requiredType))
-                    .logLevel(feign.Logger.Level.FULL)
-                    .retryer(new Retryer.Default(
-                            gbApiProperties.getConnection().getPeriod(),
-                            gbApiProperties.getConnection().getMaxPeriod(),
-                            gbApiProperties.getConnection().getMaxAttempts()
-                    ))
-                    .contract(new SpringMvcContract())
-                    .target(requiredType, url);
-        }
+    private final ApiProperties gbApiProperties;
+    private final ObjectFactory<HttpMessageConverters> messageConverters;
+    private static final Logger logger = LogManager.getLogger(LoggingFeignClientFactory.class);
+
+    @Override
+    public <T> T newFeignClient(Class<T> requiredType, String url) {
+        logger.info("The main() method is called");
+        return Feign.builder()
+                .encoder(new SpringEncoder(this.messageConverters))
+                .decoder(new OptionalDecoder(new ResponseEntityDecoder(new SpringDecoder(this.messageConverters))))
+                .options(new Request.Options(
+                        gbApiProperties.getConnection().getConnectTimeout(),
+                        TimeUnit.SECONDS,
+                        gbApiProperties.getConnection().getReadTimeout(),
+                        TimeUnit.SECONDS,
+                        true
+                ))
+                .logger(new Slf4jLogger(requiredType))
+                .logLevel(feign.Logger.Level.FULL)
+                .retryer(new Retryer.Default(
+                        gbApiProperties.getConnection().getPeriod(),
+                        gbApiProperties.getConnection().getMaxPeriod(),
+                        gbApiProperties.getConnection().getMaxAttempts()
+                ))
+                .contract(new SpringMvcContract())
+                .target(requiredType, url);
+    }
 }
