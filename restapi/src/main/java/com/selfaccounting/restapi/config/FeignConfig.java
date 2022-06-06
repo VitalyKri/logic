@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Import;
 @ComponentScan("com.selfaccounting.restapi.config")
 public class FeignConfig {
     private final ApiProperties apiProperties;
-    private final FeignClientFactory feignClientFactory;
+        private final FeignClientFactory feignClientFactory;
 
         @Bean
         public OperationGateway operationGateway() {

@@ -21,47 +21,47 @@ import static feign.FeignException.errorStatus;
 @RequiredArgsConstructor
 public class FeignClientFactory {
 
-        private final ApiProperties gbApiProperties;
-        private final ObjectFactory<HttpMessageConverters> messageConverters;
+            private final ApiProperties gbApiProperties;
+            private final ObjectFactory<HttpMessageConverters> messageConverters;
 
 
 
-        public <T> T newFeignClient(Class<T> requiredType, String url) {
-            return Feign.builder()
-                    .encoder(new SpringEncoder(this.messageConverters))
-                    .decoder(new OptionalDecoder(new ResponseEntityDecoder(new SpringDecoder(this.messageConverters))))
-                    .errorDecoder(errorDecoder())
-                    .options(new Request.Options(
-                            gbApiProperties.getConnection().getConnectTimeout(),
-                            TimeUnit.SECONDS,
-                            gbApiProperties.getConnection().getReadTimeout(),
-                            TimeUnit.SECONDS,
-                            true
-                    ))
-                    .logger(new Slf4jLogger(requiredType))
-                    .logLevel(Logger.Level.FULL)
-                    .retryer(new Retryer.Default(
-                            gbApiProperties.getConnection().getPeriod(),
-                            gbApiProperties.getConnection().getMaxPeriod(),
-                            gbApiProperties.getConnection().getMaxAttempts()
-                    ))
-                    .contract(new SpringMvcContract())
-                    .target(requiredType, url);
-        }
+            public <T> T newFeignClient(Class<T> requiredType, String url) {
+                return Feign.builder()
+                        .encoder(new SpringEncoder(this.messageConverters))
+                        .decoder(new OptionalDecoder(new ResponseEntityDecoder(new SpringDecoder(this.messageConverters))))
+                        .errorDecoder(errorDecoder())
+                        .options(new Request.Options(
+                                gbApiProperties.getConnection().getConnectTimeout(),
+                                TimeUnit.SECONDS,
+                                gbApiProperties.getConnection().getReadTimeout(),
+                                TimeUnit.SECONDS,
+                                true
+                        ))
+                        .logger(new Slf4jLogger(requiredType))
+                        .logLevel(Logger.Level.FULL)
+                        .retryer(new Retryer.Default(
+                                gbApiProperties.getConnection().getPeriod(),
+                                gbApiProperties.getConnection().getMaxPeriod(),
+                                gbApiProperties.getConnection().getMaxAttempts()
+                        ))
+                        .contract(new SpringMvcContract())
+                        .target(requiredType, url);
+            }
 
-        private ErrorDecoder errorDecoder() {
-            return (methodKey, response) -> {
-                FeignException exception = errorStatus(methodKey, response);
-                if (exception.status() == 500 || exception.status() == 503) {
-                    return new RetryableException(
-                            response.status(),
-                            exception.getMessage(),
-                            response.request().httpMethod(),
-                            exception,
-                            null,
-                            response.request());
-                }
-                return exception;
-            };
-        }
+            private ErrorDecoder errorDecoder() {
+                return (methodKey, response) -> {
+                    FeignException exception = errorStatus(methodKey, response);
+                    if (exception.status() == 500 || exception.status() == 503) {
+                        return new RetryableException(
+                                response.status(),
+                                exception.getMessage(),
+                                response.request().httpMethod(),
+                                exception,
+                                null,
+                                response.request());
+                    }
+                    return exception;
+                };
+            }
 }
