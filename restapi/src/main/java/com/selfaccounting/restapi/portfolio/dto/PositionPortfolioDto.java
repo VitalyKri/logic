@@ -9,9 +9,9 @@ import lombok.*;
 @Builder
 public class PositionPortfolioDto {
     private String instrumentType;
+    private String figi;
     private String quantity;
     private double averagePositionPrice;
-    private String sector;
     private double payment;
     private double currentPrice;
 }

@@ -26,5 +26,5 @@ public class OperationDto {
     private double price;
     private int count;
     private int payment;
-    private int ticker;
+    private String ticker;
 }

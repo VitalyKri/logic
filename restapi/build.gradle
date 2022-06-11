@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.selfaccounting'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '11'
 
 configurations {
@@ -35,6 +35,13 @@ dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
+}
+
+jar {
+    enabled = true
+}
+bootJar {
+    enabled = false
 }
 
 tasks.named('test') {
