@@ -18,21 +18,21 @@ public class OperationServiceDao extends OperationServiceChain {
 
         private final OperationDao operationDao;
         private final OperationMapper operationMapper;
-        private Map<String, OperationDto> operationMap = new HashMap();
+            private Map<String, OperationDto> operationMap = new HashMap();
 
         @Override
         public OperationDto save(OperationDto operationDto) {
 
-            operationMap.put(operationDto.getId(),operationDto);
+                operationMap.put(operationDto.getId(),operationDto);
             return super.save(operationDto);
         }
 
         @Override
         public OperationDto findById(String id) {
-            OperationDto operationDto = operationMap.get(id);
-            if (operationDto!=null){
-                return operationDto;
-            }
+                OperationDto operationDto = operationMap.get(id);
+                if (operationDto!=null){
+                    return operationDto;
+                }
 
             Operation operation = operationDao.findById(id).orElseThrow();
             if (operation!=null){
