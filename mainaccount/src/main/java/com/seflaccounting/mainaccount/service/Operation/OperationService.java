@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 
 public interface OperationService {
 
-    OperationDto save(final OperationDto operationDto);
+        OperationDto save(final OperationDto operationDto);
 
 
-    OperationDto findById(String id);
+        OperationDto findById(String id);
 
 
 }
