@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StatisticOperation {
+public class StatisticOperationDto {
     private LocalDateTime month;
     private double totalCost;
     private double expectedYield;
