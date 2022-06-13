@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface OperationMapper {
 
-    Operation toOperation(OperationDto operationDto);
+                Operation toOperation(OperationDto operationDto);
 
-    OperationDto toOperationDto(Operation operation);
+                OperationDto toOperationDto(Operation operation);
 
 }
